@@ -7,6 +7,7 @@ import Reminders from "./pages/Reminders/Reminders";
 import Aides from "./pages/Aides/Aides";
 import AssistantIA from "./pages/AssistantIA/AssistantIA";
 import DemarcheDetails from "./pages/DemarcheDetails/DemarcheDetails";
+import CompleteProfile from "./pages/CompleteProfile/CompleteProfile";
 
 function App() {
   return (
@@ -50,6 +51,10 @@ function App() {
 <Route
   path="/demarche/:id"
   element={<DemarcheDetails />}
+/>
+<Route
+  path="/complete-profile"
+  element={<CompleteProfile />}
 />
       </Routes>
     </BrowserRouter>

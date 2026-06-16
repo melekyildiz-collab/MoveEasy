@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Reminders.css";
+import Navbar from "../../components/Navbar/Navbar";
+
 
 function Reminders() {
   const [alerts, setAlerts] = useState([]);
@@ -51,6 +53,14 @@ function Reminders() {
   }, []);
 
   return (
+  <div className="dashboard-layout">
+
+    
+
+    <Navbar />
+
+    <div className="dashboard-content">
+     
   <div className="reminders-container">
 
     <div className="reminders-header">
@@ -124,7 +134,8 @@ function Reminders() {
       ))
 
     )}
-
+    </div> 
+ </div>
   </div>
 );
 }

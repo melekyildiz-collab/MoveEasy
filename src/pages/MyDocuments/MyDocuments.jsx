@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./MyDocuments.css";
+import Navbar from "../../components/Navbar/Navbar";
 
 function MyDocuments() {
   const [documents, setDocuments] = useState(() => {
@@ -81,117 +82,111 @@ const demarches =
     setDocuments(updated);
   };
 
-  return (
+ return (
+  <div className="dashboard-layout">
     
-    <div className="documents-container">
+    <Navbar />
 
-     <div className="documents-header">
+    <div className="dashboard-content">
 
-  <h1>Mes Documents</h1>
+      <div className="documents-container">
 
-  <p>
-    Gérez et suivez tous vos documents administratifs.
-  </p>
+        <div className="documents-header">
+          <h1>Mes Documents</h1>
 
-</div>
-<div className="documents-stats">
+          <p>
+            Gérez et suivez tous vos documents administratifs.
+          </p>
+        </div>
 
-  <div className="stat-card">
+        <div className="documents-stats">
 
-    <h3>Total</h3>
+          <div className="stat-card">
+            <h3>Total</h3>
+            <p>{documents.length}</p>
+          </div>
 
-    <p>{documents.length}</p>
+          <div className="stat-card">
+            <h3>Expirent bientôt</h3>
 
-  </div>
+            <p>
+              {
+                documents.filter((doc) => {
+                  const today = new Date();
+                  const expiration = new Date(doc.expiration);
 
-  <div className="stat-card">
+                  const diffDays = Math.ceil(
+                    (expiration - today) /
+                    (1000 * 60 * 60 * 24)
+                  );
 
-    <h3>Expirent bientôt</h3>
-
-    <p>
-      {
-        documents.filter((doc) => {
-
-          const today = new Date();
-
-          const expiration =
-            new Date(doc.expiration);
-
-          const diffDays =
-            Math.ceil(
-              (expiration - today) /
-              (1000 * 60 * 60 * 24)
-            );
-
-          return diffDays <= 90;
-
-        }).length
-      }
-    </p>
-
-  </div>
-
-</div>
-      <div className="form-document">
-
-        <input
-          type="text"
-          placeholder="Nom du document"
-          value={nom}
-          onChange={(e) =>
-            setNom(e.target.value)
-          }
-        />
-
-        <input
-          type="date"
-          value={expiration}
-          onChange={(e) =>
-            setExpiration(e.target.value)
-          }
-        />
-
-        <button
-          onClick={ajouterDocument}
-        >
-          Ajouter
-        </button>
-
-      </div>
-
-      <div className="documents-list">
-
-        {documents.map((doc) => (
-          <div
-            key={doc.id}
-            className="document-card"
-          >
-            <div>
-
-              <h3>{doc.nom}</h3>
-
-<span className="document-date">
-  Expire le : {doc.expiration}
-</span>
-
-            </div>
-
-            <button
-              className="delete-btn"
-              onClick={() =>
-                supprimerDocument(doc.id)
+                  return diffDays <= 90;
+                }).length
               }
-            >
-              🗑 Supprimer
-            </button>
+            </p>
 
           </div>
-        ))}
+
+        </div>
+
+        <div className="form-document">
+
+          <input
+            type="text"
+            placeholder="Nom du document"
+            value={nom}
+            onChange={(e) => setNom(e.target.value)}
+          />
+
+          <input
+            type="date"
+            value={expiration}
+            onChange={(e) => setExpiration(e.target.value)}
+          />
+
+          <button onClick={ajouterDocument}>
+            Ajouter
+          </button>
+
+        </div>
+
+        <div className="documents-list">
+
+          {documents.map((doc) => (
+            <div
+              key={doc.id}
+              className="document-card"
+            >
+              <div>
+
+                <h3>{doc.nom}</h3>
+
+                <span className="document-date">
+                  Expire le : {doc.expiration}
+                </span>
+
+              </div>
+
+              <button
+                className="delete-btn"
+                onClick={() =>
+                  supprimerDocument(doc.id)
+                }
+              >
+                🗑 Supprimer
+              </button>
+
+            </div>
+          ))}
+
+        </div>
 
       </div>
 
     </div>
-  );
+
+  </div>
+);
 }
 
 export default MyDocuments;

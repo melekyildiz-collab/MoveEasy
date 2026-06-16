@@ -1,6 +1,6 @@
 import "./Aides.css";
 import { useNavigate } from "react-router-dom";
-
+import Navbar from "../../components/Navbar/Navbar";
 function Aides() {
   const navigate = useNavigate();
   const documents =
@@ -53,6 +53,11 @@ function Aides() {
 ];
 
 return (
+  <div className="dashboard-layout">
+
+  <Navbar />
+
+  <div className="dashboard-content">
   <div className="aides-container">
 
     <div className="aides-header">
@@ -171,6 +176,8 @@ return (
 
     </div>
 
+  </div>
+   </div>
   </div>
 );
 }

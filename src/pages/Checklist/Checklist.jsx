@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Checklist.css";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../../components/Navbar/Navbar";
 
 function Checklist() {
   const navigate = useNavigate();
@@ -181,6 +182,14 @@ function Checklist() {
     demarches.length - completedCount;
 
   return (
+    
+
+<div className="dashboard-layout">
+
+  <Navbar />
+
+  <div className="dashboard-content">
+    
     <div className="checklist-container">
 
      <div className="checklist-header">
@@ -313,6 +322,8 @@ function Checklist() {
         </div>
       ))}
     </div>
+     </div>
+      </div>
   );
 }
 
