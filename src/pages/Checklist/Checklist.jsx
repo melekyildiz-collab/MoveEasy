@@ -1,19 +1,61 @@
 import { useState, useEffect } from "react";
 import "./Checklist.css";
+import { useNavigate } from "react-router-dom";
 
 function Checklist() {
-  const [openItem, setOpenItem] = useState(null);
+  const navigate = useNavigate();
 
   const initialDemarches = [
     {
-      id: 1,
-      titre: "CAF",
-      description: "Aide au logement pour les étudiants.",
+  id: 0,
+  titre: "Ouvrir un compte bancaire",
+  description: "Création d'un compte bancaire français",
+  duree: "1 semaine",
+  etapes: "3 étapes",
+  completed: false,
+
+  documents: [
+    {
+      nom: "Passeport",
+      checked: false,
+    }
+  ],
+
+  source: "service-public.fr",
+  date: "15/06/2026",
+},
+    {
+  id: 1,
+  titre: "Demander les aides CAF",
+  dependsOn: [0],
+  description: "Allocation logement étudiant",
+  duree: "1-2 semaines",
+  etapes: "4 étapes",
+  completed: true,
       documents: [
-        "Contrat de location",
-        "RIB",
-        "Attestation de scolarité",
-        "Pièce d'identité",
+        {
+
+    nom: "Passeport",
+
+    checked: false,
+
+  },
+
+  {
+
+    nom: "Attestation de scolarité",
+
+    checked: false,
+
+  },
+
+  {
+
+    nom: "RIB",
+
+    checked: false,
+
+  },
       ],
       source: "caf.fr",
       date: "15/06/2026",
@@ -21,14 +63,44 @@ function Checklist() {
     },
 
     {
-      id: 2,
-      titre: "Titre de séjour",
-      description: "Renouvellement du titre étudiant.",
+  id: 2,
+  titre: "Titre de séjour étudiant",
+  description: "Renouvellement administratif",
+  duree: "2-3 mois",
+  etapes: "5 étapes",
+  completed: false,
       documents: [
-        "Passeport",
-        "Attestation de scolarité",
-        "Justificatif de domicile",
-        "Photo d'identité",
+        {
+
+    nom: "Passeport",
+
+    checked: false,
+
+  },
+
+  {
+
+    nom: "Attestation de scolarité",
+
+    checked: false,
+
+  },
+
+  {
+
+    nom: "Justificatif de domicile",
+
+    checked: false,
+
+  },
+
+  {
+
+    nom: "Photo d'identité",
+
+    checked: false,
+
+  },
       ],
       source: "service-public.fr",
       date: "01/07/2026",
@@ -36,18 +108,44 @@ function Checklist() {
     },
 
     {
-      id: 3,
-      titre: "Ameli",
-      description: "Inscription à l'assurance maladie.",
+  id: 3,
+  titre: "Sécurité sociale (Ameli)",
+  description: "Assurance maladie française",
+  duree: "2-4 semaines",
+  etapes: "3 étapes",
+  completed: false,
       documents: [
-        "Passeport",
-        "Attestation de scolarité",
-        "RIB",
-      ],
-      source: "ameli.fr",
-      date: "10/06/2026",
-      completed: false,
+       {
+
+      nom: "Passeport",
+
+      checked: false,
+
     },
+
+    {
+
+      nom: "Attestation de scolarité",
+
+      checked: false,
+
+    },
+
+    {
+
+      nom: "RIB",
+
+      checked: false,
+
+    },
+
+  ],
+
+  source: "ameli.fr",
+
+  date: "10/06/2026",
+
+},
   ];
 
   const [demarches, setDemarches] = useState(() => {
@@ -62,10 +160,7 @@ function Checklist() {
     );
   }, [demarches]);
 
-  const toggleItem = (id) => {
-    setOpenItem(openItem === id ? null : id);
-  };
-
+ 
   const toggleCompleted = (id) => {
     const updated = demarches.map((item) =>
       item.id === id
@@ -88,7 +183,12 @@ function Checklist() {
   return (
     <div className="checklist-container">
 
-      <h1>📋 Mes démarches</h1>
+     <div className="checklist-header">
+  <h1>Mes démarches</h1>
+  <p>
+    {completedCount} sur {demarches.length} démarches complétées
+  </p>
+</div>
 
       <div className="stats-checklist">
 
@@ -103,84 +203,113 @@ function Checklist() {
         </div>
 
       </div>
+<div className="progress-box">
 
-      {demarches.map((item) => (
+  <div className="progress-header">
+
+    <span>Progression globale</span>
+
+    <span>
+      {Math.round(
+        (completedCount / demarches.length) * 100
+      ) || 0}
+      %
+    </span>
+
+  </div>
+
+  <div className="progress-bar">
+
+    <div
+      className="progress-fill"
+      style={{
+        width: `${
+          Math.round(
+            (completedCount /
+              demarches.length) *
+              100
+          ) || 0
+        }%`,
+      }}
+    />
+
+  </div>
+
+</div>
+
+<input
+  type="text"
+  placeholder="Rechercher une démarche..."
+  className="search-input"
+/>
+
+<div className="filters">
+
+  <button className="active-filter">
+    Tout
+  </button>
+
+  <button>
+    En cours
+  </button>
+
+  <button>
+    Terminées
+  </button>
+
+</div>
+
+{demarches.map((item) => (
         <div
           key={item.id}
           className="demarche-card"
         >
           <div
-            className="demarche-header"
-            onClick={() => toggleItem(item.id)}
-          >
-            <h3>
-              {openItem === item.id ? "▼" : "▶"}{" "}
-              {item.titre}
-            </h3>
+  className="demarche-header"
+  onClick={() =>
+    navigate(`/demarche/${item.id}`)
+  }
+>
+  <div>
 
-            {item.completed && (
-              <span>✅</span>
-            )}
-          </div>
+    <h3>{item.titre}</h3>
 
-          {openItem === item.id && (
-            <div className="demarche-details">
+    <p className="demarche-subtitle">
+      {item.description}
+    </p>
+<div className="demarche-meta">
 
-              <p>
-                <strong>Description :</strong>
-              </p>
+  <span>
+    {item.completed
+      ? "Terminée"
+      : "À faire"}
+  </span>
 
-              <p>{item.description}</p>
+  <span>•</span>
 
-              <br />
+  <span>{item.duree}</span>
 
-              <p>
-                <strong>
-                  Documents recommandés :
-                </strong>
-              </p>
+  <span>•</span>
 
-              <ul>
-                {item.documents.map(
-                  (doc, index) => (
-                    <li key={index}>
-                      ✓ {doc}
-                    </li>
-                  )
-                )}
-              </ul>
+  <span>{item.etapes}</span>
 
-              <br />
+</div>
+  </div>
 
-              <p>
-                <strong>
-                  Source officielle :
-                </strong>{" "}
-                {item.source}
-              </p>
+  <span
+    className={
+      item.completed
+        ? "status completed"
+        : "status pending"
+    }
+  >
+    {item.completed
+      ? "Terminée"
+      : "À faire"}
+  </span>
 
-              <p>
-                <strong>
-                  Dernière mise à jour :
-                </strong>{" "}
-                {item.date}
-              </p>
+</div>
 
-              <br />
-
-              <label>
-                <input
-                  type="checkbox"
-                  checked={item.completed}
-                  onChange={() =>
-                    toggleCompleted(item.id)
-                  }
-                />{" "}
-                Démarche terminée
-              </label>
-
-            </div>
-          )}
         </div>
       ))}
     </div>

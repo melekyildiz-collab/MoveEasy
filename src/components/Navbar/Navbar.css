@@ -1,52 +1,68 @@
-.sidebar {
-  width: 240px;
-  min-height: 100vh;
-  background: #2563eb;
-  padding: 25px;
+.sidebar{
+  width:270px;
+  min-height:100vh;
+  background:#111827;
+  color:white;
+  padding:32px 20px;
+  display:flex;
+  flex-direction:column;
 }
 
-.logo {
-  color: white;
-  margin-bottom: 40px;
+.logo-section{
+  margin-bottom:45px;
 }
 
-.sidebar ul {
-  list-style: none;
-  padding: 0;
+.logo{
+  font-size:30px;
+  font-weight:700;
+  margin-bottom:5px;
+  letter-spacing:-1px;
 }
 
-.sidebar li {
-  margin-bottom: 22px;
-  position: relative;
+.logo-subtitle{
+  color:#9ca3af;
+  font-size:14px;
 }
 
-.sidebar a {
-  color: white;
-  text-decoration: none;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
+.sidebar ul{
+  list-style:none;
 }
 
-.sidebar a:hover {
-  opacity: 0.85;
+.sidebar li{
+  margin-bottom:10px;
 }
 
-.reminder-link {
-  display: flex;
-  align-items: center;
+.sidebar a{
+  display:block;
+  text-decoration:none;
+  color:#e5e7eb;
+  padding:14px 16px;
+  border-radius:14px;
+  transition:0.25s;
+  font-weight:500;
 }
 
-.badge {
-  background: #ef4444;
-  color: white;
-  border-radius: 50%;
-  min-width: 24px;
-  height: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  font-weight: bold;
-  margin-left: 10px;
+.sidebar a:hover{
+  background:#1f2937;
+  color:white;
+}
+
+.reminder-link{
+  position:relative;
+}
+
+.badge{
+  position:absolute;
+  right:15px;
+  top:12px;
+  background:#2563eb;
+  color:white;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:700;
 }

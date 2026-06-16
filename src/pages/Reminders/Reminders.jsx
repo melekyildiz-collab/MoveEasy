@@ -51,25 +51,82 @@ function Reminders() {
   }, []);
 
   return (
-    <div className="reminders-container">
-      <h1>🔔 Mes Rappels</h1>
+  <div className="reminders-container">
 
-      {alerts.length === 0 ? (
-        <div className="info-card">
-          Aucun rappel.
-        </div>
-      ) : (
-        alerts.map((alert) => (
-          <div
-            key={alert.id}
-            className="alert-card"
-          >
-            {alert.message}
-          </div>
-        ))
-      )}
+    <div className="reminders-header">
+
+      <h1>Notifications & Rappels</h1>
+
+      <p>
+        Suivez les documents à renouveler
+        et les démarches à terminer.
+      </p>
+
     </div>
-  );
+
+    <div className="reminders-stats">
+
+      <div className="stat-card">
+
+        <h3>Total</h3>
+
+        <p>{alerts.length}</p>
+
+      </div>
+
+      <div className="stat-card">
+
+        <h3>Urgents</h3>
+
+        <p>
+          {
+            alerts.filter((alert) =>
+              alert.message.includes("expire")
+            ).length
+          }
+        </p>
+
+      </div>
+
+    </div>
+
+    {alerts.length === 0 ? (
+
+      <div className="empty-card">
+
+        🎉 Aucun rappel en attente
+
+      </div>
+
+    ) : (
+
+      alerts.map((alert) => (
+
+        <div
+          key={alert.id}
+          className="alert-card"
+        >
+
+          <div className="alert-icon">
+            🔔
+          </div>
+
+          <div>
+
+            <h4>Notification</h4>
+
+            <p>{alert.message}</p>
+
+          </div>
+
+        </div>
+
+      ))
+
+    )}
+
+  </div>
+);
 }
 
 export default Reminders;

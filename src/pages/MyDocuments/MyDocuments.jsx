@@ -46,7 +46,29 @@ function MyDocuments() {
       ...documents,
       nouveauDocument,
     ]);
+const demarches =
+  JSON.parse(
+    localStorage.getItem("demarches")
+  ) || [];
+  const updatedDemarches =
+  demarches.map((demarche) => ({
+    ...demarche,
 
+    documents: demarche.documents.map(
+      (doc) =>
+        doc.nom.toLowerCase() ===
+        nom.toLowerCase()
+          ? {
+              ...doc,
+              checked: true,
+            }
+          : doc
+    ),
+  }));
+  localStorage.setItem(
+  "demarches",
+  JSON.stringify(updatedDemarches)
+);
     setNom("");
     setExpiration("");
   };
@@ -60,10 +82,56 @@ function MyDocuments() {
   };
 
   return (
+    
     <div className="documents-container">
 
-      <h1>📁 Mes Documents</h1>
+     <div className="documents-header">
 
+  <h1>Mes Documents</h1>
+
+  <p>
+    Gérez et suivez tous vos documents administratifs.
+  </p>
+
+</div>
+<div className="documents-stats">
+
+  <div className="stat-card">
+
+    <h3>Total</h3>
+
+    <p>{documents.length}</p>
+
+  </div>
+
+  <div className="stat-card">
+
+    <h3>Expirent bientôt</h3>
+
+    <p>
+      {
+        documents.filter((doc) => {
+
+          const today = new Date();
+
+          const expiration =
+            new Date(doc.expiration);
+
+          const diffDays =
+            Math.ceil(
+              (expiration - today) /
+              (1000 * 60 * 60 * 24)
+            );
+
+          return diffDays <= 90;
+
+        }).length
+      }
+    </p>
+
+  </div>
+
+</div>
       <div className="form-document">
 
         <input
@@ -102,11 +170,9 @@ function MyDocuments() {
 
               <h3>{doc.nom}</h3>
 
-              <p>
-                Expire le :
-                {" "}
-                {doc.expiration}
-              </p>
+<span className="document-date">
+  Expire le : {doc.expiration}
+</span>
 
             </div>
 

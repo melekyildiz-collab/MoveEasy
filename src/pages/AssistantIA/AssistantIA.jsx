@@ -92,14 +92,50 @@ ameli.fr
 
       <div className="ai-container">
 
-        <h1>
-          🤖 Assistant IA MoveEasy
-        </h1>
+       <div className="ai-header">
 
-        <p className="subtitle">
-          Posez vos questions sur les démarches administratives.
-        </p>
+  <h1>
+    Assistant IA MoveEasy
+  </h1>
 
+  <p>
+    Obtenez instantanément des informations sur vos démarches administratives.
+  </p>
+
+</div>
+<div className="quick-questions">
+
+  <button
+    onClick={() =>
+      setQuestion(
+        "Quels documents pour la CAF ?"
+      )
+    }
+  >
+    CAF
+  </button>
+
+  <button
+    onClick={() =>
+      setQuestion(
+        "Comment renouveler mon titre de séjour ?"
+      )
+    }
+  >
+    Titre de séjour
+  </button>
+
+  <button
+    onClick={() =>
+      setQuestion(
+        "Documents pour Ameli"
+      )
+    }
+  >
+    Ameli
+  </button>
+
+</div>
         <div className="chat-box">
 
           {messages.map(

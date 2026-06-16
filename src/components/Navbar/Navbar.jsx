@@ -22,7 +22,6 @@ function Navbar() {
 
     let alerts = 0;
 
-    // Documents qui expirent bientôt
     documents.forEach((doc) => {
 
       const expirationDate =
@@ -40,7 +39,6 @@ function Navbar() {
 
     });
 
-    // Démarches non terminées
     alerts += demarches.filter(
       (item) => !item.completed
     ).length;
@@ -52,34 +50,40 @@ function Navbar() {
   return (
     <div className="sidebar">
 
-      <h2 className="logo">
-        MoveEasy
-      </h2>
+      <div className="logo-section">
+        <h2 className="logo">
+          MoveEasy
+        </h2>
+
+        <p className="logo-subtitle">
+          Assistant étudiant
+        </p>
+      </div>
 
       <ul>
 
         <li>
           <Link to="/dashboard">
-            🏠 Dashboard
+            Dashboard
           </Link>
         </li>
 
         <li>
           <Link to="/checklist">
-            📋 Checklist
+            Mes démarches
           </Link>
         </li>
 
         <li>
           <Link to="/mydocuments">
-            📁 Mes Documents
+            Documents
           </Link>
         </li>
 
         <li className="reminder-link">
 
           <Link to="/reminders">
-            🔔 Rappels
+            Rappels
           </Link>
 
           {notificationCount > 0 && (
@@ -92,13 +96,13 @@ function Navbar() {
 
         <li>
           <Link to="/aides">
-            💰 Aides
+            Aides financières
           </Link>
         </li>
 
         <li>
           <Link to="/assistantia">
-            🤖 Assistant IA
+            Assistant
           </Link>
         </li>
 

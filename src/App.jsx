@@ -6,6 +6,7 @@ import MyDocuments from "./pages/MyDocuments/MyDocuments";
 import Reminders from "./pages/Reminders/Reminders";
 import Aides from "./pages/Aides/Aides";
 import AssistantIA from "./pages/AssistantIA/AssistantIA";
+import DemarcheDetails from "./pages/DemarcheDetails/DemarcheDetails";
 
 function App() {
   return (
@@ -46,7 +47,10 @@ function App() {
           path="/assistantia"
           element={<AssistantIA />}
         />
-
+<Route
+  path="/demarche/:id"
+  element={<DemarcheDetails />}
+/>
       </Routes>
     </BrowserRouter>
   );

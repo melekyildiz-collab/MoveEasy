@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import "./Dashboard.css";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [stats, setStats] = useState({
     completed: 0,
     remaining: 0,
@@ -10,6 +12,8 @@ function Dashboard() {
   });
 
   const [nextStep, setNextStep] = useState("");
+  const [pendingDemarches, setPendingDemarches] =
+  useState([]);
   const [remindersCount, setRemindersCount] = useState(0);
 
   useEffect(() => {
@@ -40,7 +44,7 @@ function Dashboard() {
               100
           )
         : 0;
-
+    
     // Prochaine démarche
     const nextDemarche =
       demarches.find(
@@ -58,6 +62,35 @@ function Dashboard() {
       remaining,
       progress,
     });
+
+    setPendingDemarches(
+
+  demarches.filter((item) => {
+
+    if (item.completed) {
+      return false;
+    }
+
+    if (!item.dependsOn) {
+      return true;
+    }
+
+    return item.dependsOn.every(
+      (dependencyId) => {
+
+        const dependency =
+          demarches.find(
+            (d) =>
+              d.id === dependencyId
+          );
+
+        return dependency?.completed;
+      }
+    );
+
+  })
+
+);
 
     // Calcul des rappels
     const today = new Date();
@@ -86,60 +119,234 @@ function Dashboard() {
 
     setRemindersCount(alerts);
   }, []);
+const myDocuments =
+  JSON.parse(
+    localStorage.getItem("documents")
+  ) || [];
 
   return (
-    <div className="dashboard-layout">
+  <div className="dashboard-layout">
 
-      <Navbar />
+    <Navbar />
 
-      <div className="dashboard-content">
+    <div className="dashboard-content">
 
-        <h1>Bonjour Melek 👋</h1>
+      <div className="dashboard-header">
+        <h1>Bonjour Melek</h1>
+        <p>Bienvenue sur MoveEasy</p>
+      </div>
 
-        <p className="subtitle">
-          Bienvenue sur MoveEasy
-        </p>
+      <div className="dashboard-hero">
 
-        <div className="stats">
+  <div className="progress-hero">
 
-          <div className="card">
-            <h3>Démarches restantes</h3>
-            <p>{stats.remaining}</p>
-          </div>
+    <div className="circle-progress">
 
-          <div className="card">
-            <h3>Démarches terminées</h3>
-            <p>{stats.completed}</p>
-          </div>
+      {stats.progress}%
 
-          <div className="card">
-            <h3>Rappels actifs</h3>
-            <p>{remindersCount}</p>
-          </div>
+    </div>
 
-          <div className="card">
-            <h3>Progression</h3>
-            <p>{stats.progress}%</p>
-          </div>
+    <div>
 
-        </div>
+      <span>
+        PROGRESSION GLOBALE
+      </span>
 
-        <div className="section">
+      <h2>
+        {stats.completed}/
+        {stats.completed + stats.remaining}
+      </h2>
 
-          <h2>
-            📌 Prochaine démarche
-          </h2>
+      <p>démarches</p>
 
-          <div className="next-step">
-            {nextStep}
-          </div>
+    </div>
 
-        </div>
+  </div>
+
+  <div className="next-hero">
+
+    <span>
+      PROCHAINE ACTION 
+    </span>
+
+    <h3>{nextStep}</h3>
+
+    <p>
+      Continuez votre installation
+      administrative.
+    </p>
+
+  </div>
+
+</div>
+
+        <h2 className="section-title">
+  ⚠️ Urgent à traiter maintenant
+</h2>
+
+<div className="urgent-list">
+
+ <div className="urgent-list">
+
+  {pendingDemarches.map(
+    (demarche) => (
+
+      <div
+  key={demarche.id}
+  className="urgent-item"
+  onClick={() =>
+    navigate(
+      `/demarche/${demarche.id}`
+    )
+  }
+>
+
+        <div>
+
+  <h4>
+    {demarche.titre}
+  </h4>
+
+  <p className="urgent-progress">
+
+    📄 {
+      demarche.documents.filter(
+  (doc) =>
+    myDocuments.some(
+      (myDoc) =>
+        myDoc.nom.toLowerCase() ===
+        doc.nom.toLowerCase()
+    )
+).length
+    }/
+    {demarche.documents.length}
+
+    {" • "}
+
+    📋 {
+      JSON.parse(
+        localStorage.getItem(
+          `steps-${demarche.id}`
+        )
+      )?.filter(Boolean).length || 0
+    }/4
+
+  </p>
+  {
+  demarche.documents.filter(
+  (doc) =>
+    !myDocuments.some(
+      (myDoc) =>
+        myDoc.nom.toLowerCase() ===
+        doc.nom.toLowerCase()
+    )
+
+  ).length > 0 ? (
+
+    <div className="missing-docs">
+
+      <span>
+        📄 Documents manquants
+      </span>
+
+      {
+      demarche.documents.filter(
+  (doc) =>
+    !myDocuments.some(
+      (myDoc) =>
+        myDoc.nom.toLowerCase() ===
+        doc.nom.toLowerCase()
+    )
+)
+        .map((doc, index) => (
+
+          <p key={index}>
+            • {doc.nom}
+          </p>
+
+        ))}
+
+    </div>
+
+  ) : (
+
+    <div className="documents-ready">
+
+      ✅ Tous les documents sont prêts
+
+    </div>
+
+  )
+}
+<div className="mini-progress">
+
+  <div
+  className="mini-progress-fill"
+  style={{
+    width: `${
+      Math.round(
+        (
+          (
+            demarche.documents.filter(
+              (doc) =>
+                myDocuments.some(
+                  (myDoc) =>
+                    myDoc.nom.toLowerCase() ===
+                    doc.nom.toLowerCase()
+                )
+            ).length +
+            (
+              JSON.parse(
+                localStorage.getItem(
+                  `steps-${demarche.id}`
+                )
+              )?.filter(Boolean).length || 0
+            )
+          ) / 7
+        ) * 100
+      )
+    }%`,
+  }}
+/> 
+
+</div>
+</div>
+
+<span>
+  {demarche.duree}
+</span>
 
       </div>
 
+    )
+  )}
+
+</div>
+
+</div>
+      </div>
+
+      <div className="dashboard-cards">
+
+  <div className="card">
+    <h3>Démarches restantes</h3>
+    <p>{stats.remaining}</p>
+  </div>
+
+  <div className="card">
+    <h3>Démarches terminées</h3>
+    <p>{stats.completed}</p>
+  </div>
+
+  <div className="card">
+    <h3>Notifications</h3>
+    <p>{remindersCount}</p>
+  </div>
+
+</div>
     </div>
-  );
+
+);
 }
 
 export default Dashboard;

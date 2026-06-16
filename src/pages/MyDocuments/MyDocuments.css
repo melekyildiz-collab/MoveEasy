@@ -1,47 +1,113 @@
-.documents-container {
-  padding: 30px;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-.form-document {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 30px;
+.documents-container{
+  padding:40px;
+  background:#f5f7fb;
+  min-height:100vh;
 }
 
-.form-document input {
-  padding: 10px;
+.documents-header{
+  margin-bottom:30px;
 }
 
-.form-document button {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
+.documents-header h1{
+  font-size:38px;
+  color:#111827;
+  margin-bottom:8px;
 }
 
-.documents-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.documents-header p{
+  color:#6b7280;
 }
 
-.document-card {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+.form-document{
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  display:flex;
+  gap:15px;
+  margin-bottom:30px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.05);
 }
 
-.delete-btn {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
+.form-document input{
+  flex:1;
+  padding:14px;
+  border:1px solid #d1d5db;
+  border-radius:12px;
+  font-size:14px;
+}
+
+.form-document button{
+  background:#2563eb;
+  color:white;
+  border:none;
+  padding:14px 24px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.documents-list{
+  display:grid;
+  gap:20px;
+}
+
+.document-card{
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 6px 20px rgba(0,0,0,0.05);
+}
+
+.document-card h3{
+  color:#111827;
+  margin-bottom:8px;
+}
+
+.document-date{
+  color:#6b7280;
+  font-size:14px;
+}
+
+.delete-btn{
+  background:#ef4444;
+  color:white;
+  border:none;
+  padding:12px 18px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+}
+.documents-stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin-bottom:25px;
+}
+
+.stat-card{
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 6px 20px rgba(0,0,0,0.05);
+}
+
+.stat-card h3{
+  color:#6b7280;
+  margin-bottom:10px;
+}
+
+.stat-card p{
+  font-size:32px;
+  font-weight:700;
+  color:#2563eb;
 }
