@@ -1,0 +1,330 @@
+/* =========================
+VARIABLES
+========================= */
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+
+  --danger: #ef4444;
+  --success: #16a34a;
+
+  --text: #111827;
+  --text-muted: #6b7280;
+
+  --bg: #f6f8fc;
+  --card: #ffffff;
+
+  --radius-lg: 24px;
+  --radius-md: 16px;
+
+  --shadow-sm: 0 8px 20px rgba(0,0,0,0.06);
+  --shadow-md: 0 12px 30px rgba(0,0,0,0.12);
+
+  --transition: 0.25s ease;
+}
+
+/* =========================
+RESET
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+#root {
+  width: 100%;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* =========================
+LAYOUT
+========================= */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 40px;
+  min-width: 0;
+}
+
+/* =========================
+HEADER
+========================= */
+.dashboard-header {
+  margin-bottom: 35px;
+}
+
+.dashboard-header h1 {
+  font-size: 42px;
+  color: #1805a7;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.dashboard-header p {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+/* =========================
+HERO
+========================= */
+.dashboard-hero {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+/* Progress card */
+.progress-hero {
+  background: linear-gradient(135deg, #07379e, var(--primary));
+  color: white;
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 12px 30px rgba(7, 55, 158, 0.25);
+}
+
+/* Circle */
+.circle-progress {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 8px solid rgba(255,255,255,0.25);
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+/* Next action */
+.next-hero {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.next-hero:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.next-hero span {
+  color: #ff6b57;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.next-hero h3 {
+  margin-top: 10px;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.next-hero p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* =========================
+SECTION TITLE
+========================= */
+.section-title {
+  margin: 30px 0 20px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* =========================
+URGENT LIST
+========================= */
+.urgent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.urgent-item {
+  background: var(--card);
+  padding: 25px;
+  min-height: 140px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.urgent-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.urgent-item h4 {
+  font-weight: 700;
+}
+
+.urgent-progress {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* =========================
+DOCUMENTS
+========================= */
+.missing-docs {
+  margin-top: 10px;
+}
+
+.missing-docs span {
+  font-weight: 700;
+  color: var(--danger);
+}
+
+.missing-docs p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.documents-ready {
+  margin-top: 10px;
+  color: var(--success);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* =========================
+PROGRESS BAR
+========================= */
+.mini-progress {
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.mini-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+/* =========================
+STATS CARDS
+========================= */
+.dashboard-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card {
+  background: linear-gradient(135deg, #ffffff, #f8fafc);
+  border-radius: var(--radius-lg);
+  padding: 25px;
+  width: 220px;
+  min-height: 140px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+  overflow: hidden;
+
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  transition: all 0.3s ease;
+
+  border: 1px solid rgba(37, 99, 235, 0.08);
+}
+
+/* effet glow subtil comme la progress card */
+.card::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -40%;
+  width: 180%;
+  height: 180%;
+  background: radial-gradient(
+    circle,
+    rgba(37, 99, 235, 0.08),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.15);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* titre */
+.card h3 {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* valeur (gros chiffre style dashboard pro) */
+.card p {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -1px;
+}
+/* =========================
+RESPONSIVE
+========================= */
+@media (max-width: 1000px) {
+  .dashboard-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-content {
+    padding: 20px;
+  }
+
+  .dashboard-cards {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+  }
+}

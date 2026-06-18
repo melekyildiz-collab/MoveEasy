@@ -1,0 +1,253 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserStatus {
+  etudiant
+  alternant
+  boursier
+}
+
+enum DocStatus {
+  valide
+  expire
+  manquant
+}
+
+enum DemarcheStatus {
+  todo
+  enCours
+  done
+}
+
+enum EtapeStatus {
+  todo
+  done
+}
+
+enum AideStatus {
+  eligible
+  demandee
+  obtenue
+  refusee
+}
+
+enum NotifType {
+  info
+  rappel
+  alerte
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  email          String    @unique
+  passwordHash   String    @map("password_hash")
+
+  nom            String?
+  prenom         String?
+  dateNaissance  DateTime? @map("date_naissance")
+  nationalite    String?
+  dateArrivee    DateTime? @map("date_arrivee")
+  ville          String?
+  niveauEtudes   String?   @map("niveau_etudes")
+
+  estComplet     Boolean   @default(false) @map("est_complet")
+  status         UserStatus @default(etudiant)
+
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  demarches      UtilisateurDemarche[]
+  aides          UtilisateurAide[]
+  documents      DocumentUtilisateur[]
+  notifications  Notification[]
+
+  @@map("utilisateurs")
+}
+
+model Demarche {
+  id                Int      @id @default(autoincrement())
+  nom               String
+  description       String?
+  categorie         String?
+  dureeEstimeJours  Int?     @map("duree_estime_jours")
+  lienOfficiel      String?  @map("lien_officiel")
+  obligatoire       Boolean  @default(true)
+  ordre             Int?
+  priorite          Int      @default(1)
+
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  etapes            Etape[]
+  documentsRequis   DocumentRequis[]
+  utilisateurs      UtilisateurDemarche[]
+  notifications     Notification[]
+
+  @@map("demarches")
+}
+
+model Etape {
+  id            Int      @id @default(autoincrement())
+  demarcheId    Int      @map("demarche_id")
+
+  titre         String
+  description   String?
+  conseil       String?
+  ordre         Int
+
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  demarche      Demarche @relation(fields: [demarcheId], references: [id], onDelete: Cascade)
+  utilisateurs  UtilisateurEtape[]
+
+  @@map("etapes")
+}
+
+model DocumentRequis {
+  id                      Int      @id @default(autoincrement())
+  demarcheId              Int      @map("demarche_id")
+
+  nom                     String
+  description             String?
+  obligatoire             Boolean @default(true)
+
+  demarche                Demarche @relation(fields: [demarcheId], references: [id], onDelete: Cascade)
+  documentsUtilisateurs   DocumentUtilisateur[]
+
+  @@map("documents_requis")
+}
+
+model DocumentUtilisateur {
+  id                Int       @id @default(autoincrement())
+  utilisateurId     Int       @map("utilisateur_id")
+  documentRequisId  Int?      @map("document_requis_id")
+
+  nomDocument       String    @map("nom_document")
+  dateExpiration    DateTime? @map("date_expiration")
+
+  statut            DocStatus @default(valide)
+
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  utilisateur       User              @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  documentRequis    DocumentRequis?   @relation(fields: [documentRequisId], references: [id])
+
+  notifications     Notification[]
+
+  @@map("documents_utilisateur")
+}
+
+model UtilisateurDemarche {
+  id              Int             @id @default(autoincrement())
+
+  utilisateurId   Int             @map("utilisateur_id")
+  demarcheId      Int             @map("demarche_id")
+
+  statut          DemarcheStatus  @default(todo)
+  etapeActuelle   Int             @default(1) @map("etape_actuelle")
+
+  dateDebut       DateTime?       @map("date_debut")
+  dateFin         DateTime?       @map("date_fin")
+
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  utilisateur     User            @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  demarche        Demarche        @relation(fields: [demarcheId], references: [id])
+
+  etapes          UtilisateurEtape[]
+
+  @@unique([utilisateurId, demarcheId])
+
+  @@map("utilisateur_demarches")
+}
+
+model UtilisateurEtape {
+  id                     Int         @id @default(autoincrement())
+
+  utilisateurDemarcheId  Int         @map("utilisateur_demarche_id")
+  etapeId                Int         @map("etape_id")
+
+  statut                 EtapeStatus @default(todo)
+
+  dateFait               DateTime?   @map("date_fait")
+
+  utilisateurDemarche    UtilisateurDemarche @relation(fields: [utilisateurDemarcheId], references: [id], onDelete: Cascade)
+  etape                  Etape               @relation(fields: [etapeId], references: [id])
+
+  @@unique([utilisateurDemarcheId, etapeId])
+
+  @@map("utilisateur_etapes")
+}
+
+model Aide {
+  id            Int       @id @default(autoincrement())
+
+  nom           String
+  description   String?
+
+  montantMin    Decimal?  @map("montant_min")
+  montantMax    Decimal?  @map("montant_max")
+
+  periodicite   String?
+  lienOfficiel  String?   @map("lien_officiel")
+  conditions    String?
+
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  utilisateurs  UtilisateurAide[]
+
+  @@map("aides")
+}
+
+model UtilisateurAide {
+  id              Int        @id @default(autoincrement())
+
+  utilisateurId   Int        @map("utilisateur_id")
+  aideId          Int        @map("aide_id")
+
+  statut          AideStatus @default(eligible)
+
+  dateDemande     DateTime?  @map("date_demande")
+  montantObtenu   Decimal?   @map("montant_obtenu")
+
+  createdAt       DateTime   @default(now()) @map("created_at")
+
+  utilisateur     User       @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  aide            Aide       @relation(fields: [aideId], references: [id])
+
+  @@unique([utilisateurId, aideId])
+
+  @@map("utilisateur_aides")
+}
+
+model Notification {
+  id                     Int       @id @default(autoincrement())
+
+  utilisateurId          Int       @map("utilisateur_id")
+  demarcheId             Int?      @map("demarche_id")
+  documentUtilisateurId  Int?      @map("document_utilisateur_id")
+
+  type                   NotifType @default(info)
+
+  title                  String?
+  message                String
+
+  estLu                  Boolean   @default(false) @map("est_lu")
+
+  dateEcheance           DateTime? @map("date_echeance")
+
+  createdAt              DateTime  @default(now()) @map("created_at")
+
+  utilisateur            User                 @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  demarche               Demarche?            @relation(fields: [demarcheId], references: [id])
+  documentUtilisateur    DocumentUtilisateur? @relation(fields: [documentUtilisateurId], references: [id])
+
+  @@map("notifications")
+}
