@@ -1,7 +1,10 @@
 import "./Register.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import fillette1 from "../../assets/fillette1.webp";
+import eyeOpen from "../../assets/oeil.png";
+import eyeClosed from "../../assets/cacher.png";
 import api from "../../api/axios";
 
 function Register() {
@@ -35,7 +38,7 @@ function Register() {
       {/* LEFT PANEL */}
       <div className="register-left">
         <div className="register-brand">
-          <div className="register-logo">🧳 MoveEasy</div>
+          <div className="register-logo">MoveEasy</div>
           <div className="register-title">Bienvenue sur MoveEasy</div>
         </div>
 
@@ -99,7 +102,11 @@ function Register() {
               className="register-toggle"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? "🙈" : "👁️"}
+              <img
+                src={showPassword ? eyeClosed : eyeOpen}
+                alt="toggle password"
+                style={{ width: "20px", height: "20px" }}
+              />
             </button>
           </div>
 
@@ -107,6 +114,9 @@ function Register() {
           <button className="register-button" onClick={handleSubmit}>
             Créer mon compte
           </button>
+          <p className="register-login-link">
+            Vous avez déjà un compte ? <Link to="/login">Se connecter</Link>
+          </p>
         </div>
       </div>
     </div>

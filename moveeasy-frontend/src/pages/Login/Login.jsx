@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import fillette1 from "../../assets/fillette1.webp";
+import eyeOpen from "../../assets/oeil.png";
+import eyeClosed from "../../assets/cacher.png";
 import api from "../../api/axios";
 import "./Login.css";
 
@@ -33,7 +35,7 @@ function Login() {
     <div className="auth-container">
       {/* LEFT */}
       <div className="auth-left">
-        <h1>🧳 MoveEasy</h1>
+        <h1>MoveEasy</h1>
         <p>Bienvenue sur MoveEasy</p>
 
         <img src={fillette1} alt="illustration" className="auth-img" />
@@ -68,11 +70,19 @@ function Login() {
               type="button"
               onClick={() => setShowPassword(!showPassword)}
             >
-              👁
+              <img
+                src={showPassword ? eyeClosed : eyeOpen}
+                alt="toggle password"
+                style={{ width: "20px", height: "20px" }}
+              />
             </button>
           </div>
 
           <button type="submit">Login</button>
+
+          <p className="auth-register-link">
+            Vous n'avez pas de compte ? <a href="/register">Créer un compte</a>
+          </p>
         </form>
       </div>
     </div>
