@@ -5,6 +5,8 @@ import Navbar from "../../components/Navbar/Navbar";
 
 function Checklist() {
   const navigate = useNavigate();
+  const [search, setSearch] = useState("");
+const [filter, setFilter] = useState("all");
 
   const initialDemarches = [
     {
@@ -181,6 +183,20 @@ function Checklist() {
   const remainingCount =
     demarches.length - completedCount;
 
+    const filteredDemarches = demarches.filter((item) => {
+  const matchSearch =
+    item.titre
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+  const matchFilter =
+    filter === "all" ||
+    (filter === "pending" && !item.completed) ||
+    (filter === "completed" && item.completed);
+
+  return matchSearch && matchFilter;
+});
+
   return (
     
 
@@ -250,25 +266,36 @@ function Checklist() {
   type="text"
   placeholder="Rechercher une démarche..."
   className="search-input"
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
 />
 
 <div className="filters">
 
-  <button className="active-filter">
+  <button
+    className={filter === "all" ? "active-filter" : ""}
+    onClick={() => setFilter("all")}
+  >
     Tout
   </button>
 
-  <button>
+  <button
+    className={filter === "pending" ? "active-filter" : ""}
+    onClick={() => setFilter("pending")}
+  >
     En cours
   </button>
 
-  <button>
+  <button
+    className={filter === "completed" ? "active-filter" : ""}
+    onClick={() => setFilter("completed")}
+  >
     Terminées
   </button>
 
 </div>
 
-{demarches.map((item) => (
+{filteredDemarches.map((item) => (
         <div
           key={item.id}
           className="demarche-card"

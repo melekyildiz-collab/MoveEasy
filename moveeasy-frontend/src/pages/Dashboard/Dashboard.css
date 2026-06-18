@@ -46,8 +46,11 @@ LAYOUT
 ========================= */
 .dashboard-layout {
   display: flex;
+  align-items: flex-start;
   min-height: 100vh;
 }
+
+
 
 .dashboard-content {
   flex: 1;
@@ -241,6 +244,7 @@ STATS CARDS
   display: flex;
   flex-direction: column;
   gap: 15px;
+  padding-top: 190px;
 }
 
 .card {
